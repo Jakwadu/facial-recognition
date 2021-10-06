@@ -21,14 +21,14 @@ fitted_pca = os.path.realpath(f'fitted_pca_{encoder_type}.pkl')
 def encode_image(img_paths, face_detector, img_encoder):
     imgs = list(map(tf.keras.preprocessing.image.load_img, img_paths))
     imgs = [np.asarray(img) for img in imgs]
-    faces = [np.array(face_detector.detect_faces(img)) for img in imgs]
+    faces = [np.array([face['image'] for face in face_detector.detect_faces(img)]) for img in imgs]
     faces = np.concatenate([face for face in faces if len(face.shape) == 4])
     face_encodings = img_encoder.encode(faces)
     return face_encodings
 
 
-def read_and_encode_images(dir, face_detector, img_encoder):
-    files = [os.path.join(dir, f) for f in os.listdir(dir)]
+def read_and_encode_images(directory, face_detector, img_encoder):
+    files = [os.path.join(directory, f) for f in os.listdir(directory)]
     encodings = []
     for idx in tqdm(range(0, len(files), batch_size), desc='Encoding image batches'):
         encodings.append(encode_image(files[idx:idx+batch_size], face_detector, img_encoder))

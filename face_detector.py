@@ -37,13 +37,13 @@ class FaceDetector:
             if self.face_size is not None:
                 face = Image.fromarray(face)
                 face = face.resize(self.face_size)
-            faces.append(np.asarray(face))
+            faces.append({'image': np.asarray(face), 'co-ordinates': (x0, y0, x1, y1)})
         return faces
 
 
 if __name__ == "__main__":
     detector = FaceDetector()
     img = plt.imread('target_faces/sources/GettyImages-1228393166.jpg')
-    face = detector.detect_faces(img)[0]
+    face = detector.detect_faces(img)[0]['image']
     plt.imshow(face)
     plt.show()

@@ -1,3 +1,4 @@
+import numpy as np
 import tensorflow.keras.applications.xception as xception
 import tensorflow.keras.applications.resnet50 as resnet50
 import tensorflow.keras.applications.vgg16 as vgg16
@@ -17,6 +18,8 @@ class FaceEncoder:
             self.encoder = vgg16.VGG16(include_top=False, pooling='avg')
 
     def encode(self, img):
+        if len(img.shape) == 3:
+            img = np.array([img])
         if self.encoder_type == 'xception':
             encoded_img = self.encoder(xception.preprocess_input(img))
         elif self.encoder_type == 'resnet50':
