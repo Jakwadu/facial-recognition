@@ -22,6 +22,7 @@ class FaceDetector:
         if self.mtcnn:
             result = self.detector.detect_faces(frame)
         else:
+            frame = frame.astype('uint8')
             grey = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
             result = self.detector.detectMultiScale(grey, 1.3, 5)
         faces = []
