@@ -22,7 +22,7 @@ def generate_masks(imgs, n_masks, mask_size):
     for idx, start_points in enumerate(indices):
         for idx1, start in enumerate(start_points):
             mask[idx, start[0]:start[0] + mask_size[0], start[1]:start[1] + mask_size[1]] = 0
-            masked_patches[idx, :, :, idx1:idx1+3] = imgs[idx, start[0]:start[0] + mask_size[0], start[1]:start[1] + mask_size[1]]
+            masked_patches[idx, :, :, idx1:idx1+3] = imgs[idx, start[0]:start[0] + mask_size[0], start[1]:start[1] + mask_size[1], :]
     return mask, masked_patches, indices
 
 
