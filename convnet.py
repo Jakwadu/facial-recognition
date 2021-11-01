@@ -3,8 +3,8 @@ import tensorflow.keras.layers as layers
 
 
 def conv_block(n_filters, inputs):
-    x = layers.Conv2D(n_filters, 3, padding='same', dilation_rate=2)(inputs)
-    x = layers.Conv2D(n_filters, 3, padding='same', dilation_rate=2)(x)
+    x = layers.Conv2D(n_filters, 3, padding='same', dilation_rate=1)(inputs)
+    x = layers.Conv2D(n_filters, 3, padding='same', dilation_rate=1)(x)
     x = layers.Activation('relu')(x)
     x = layers.BatchNormalization()(x)
     return x

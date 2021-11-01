@@ -10,14 +10,14 @@ IMG_PATH = 'faces'
 TEST_IMG_PATH = 'test_faces'
 IMAGE_SIZE = (128, 128)
 USE_FACE_DETECTOR = False
-PREDICT_PATCHES_ONLY = True
+PREDICT_PATCHES_ONLY = False
 TRAINING_EPOCHS = 10
 BATCH_SIZE = 48
 VALIDATION_SPLIT = 0.2
 TRAINING_STEPS = 2000
 VALIDATION_STEPS = int(TRAINING_STEPS * VALIDATION_SPLIT/(1-VALIDATION_SPLIT))
 SEED = 123
-MASK_AREAS = True
+MASK_AREAS = False
 MASK_RATIO = 0.4
 MASK_SIZE = (15, 15)
 LOSS = tf.keras.losses.MeanAbsoluteError()
@@ -81,8 +81,7 @@ def build_image_data_generators():
                                        class_mode=None,
                                        target_size=IMAGE_SIZE,
                                        batch_size=BATCH_SIZE,
-                                       seed=SEED,
-                                       subset='validation')
+                                       seed=SEED)
 
     return image_data_generator(train), image_data_generator(val), image_data_generator(test, test_mode=True)
 
@@ -129,7 +128,7 @@ if __name__ == '__main__':
     pyplot.plot(history.history['val_loss'])
     pyplot.legend(['loss', 'val_loss'])
 
-    if PREDICT_PATCHES_ONLY:
+    if MASK_AREAS and PREDICT_PATCHES_ONLY:
         # Run inference on an input sample
         test_input, ground_truth, indices, original = next(test_generator)
         test_input, ground_truth, indices, original = test_input[0], ground_truth[0], indices[0], original[0]
