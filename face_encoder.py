@@ -24,9 +24,12 @@ class FaceEncoder:
         if len(img.shape) == 3:
             img = np.array([img])
         if self.encoder_type == 'xception':
-            encoded_img = self.encoder(xception.preprocess_input(img))
+            preprocessed_img = xception.preprocess_input(img)
         elif self.encoder_type == 'resnet50':
-            encoded_img = self.encoder(resnet50.preprocess_input(img))
-        elif 'vgg' in self.encoder_type:
-            encoded_img = self.encoder(vgg16.preprocess_input(img))
-        return encoded_img
+            preprocessed_img = resnet50.preprocess_input(img)
+        elif self.encoder_type == 'vgg16':
+            preprocessed_img = vgg16.preprocess_input(img)
+        else:
+            # Ensure values are between -1 and 1
+            preprocessed_img = (img / np.max(img)) * 2 - 1
+        return self.encoder(preprocessed_img)

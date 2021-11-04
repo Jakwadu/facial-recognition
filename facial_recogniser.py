@@ -6,7 +6,7 @@ from face_dataset_encoder import encode_image
 
 
 class FacialRecogniser:
-    def __init__(self, face_dir, encoder_type, n_faces=1, face_size=(299, 299), threshold=.4):
+    def __init__(self, face_dir, encoder_type, n_faces=1, face_size=(224, 224), threshold=.4):
         self.n_faces = n_faces
         self.face_size = face_size
         self.threshold = threshold
@@ -28,7 +28,7 @@ class FacialRecogniser:
         return [{'face': f, 'recognised': r} for f, r in zip(faces, recognised)]
 
     def load_reference_faces(self, directory):
-        files = [os.path.join(directory, f) for f in os.listdir(directory)]
+        files = [os.path.join(directory, f) for f in os.listdir(directory) if '.jpg' in f]
         encoded_reference_faces = encode_image(files, self.face_detector, self.face_encoder)
         # return np.mean(encoded_reference_faces, axis=0)
         return encoded_reference_faces

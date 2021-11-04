@@ -5,9 +5,9 @@ from matplotlib import pyplot as plt
 from facial_recogniser import FacialRecogniser
 
 
-DEFAULT_REFERENCE_FACE_PATH = 'target_faces/test'
+DEFAULT_REFERENCE_FACE_PATH = 'target_faces/test' #'C:/Users/Jamie/Pictures/Camera Roll'
 DEFAULT_IMAGE = 'target_faces/sources/37w2_5d2Y4r_l.jpg'
-ENCODER_TYPE = 'xception'
+ENCODER_TYPE = 'vgg-face'
 SIMILARITY_THRESHOLD = 0.6
 
 
