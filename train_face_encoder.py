@@ -20,7 +20,7 @@ SEED = 123
 MASK_AREAS = False
 MASK_RATIO = 0.4
 MASK_SIZE = (15, 15)
-LOSS = tf.keras.losses.MeanAbsoluteError()
+LOSS = tf.keras.losses.MeanAbsolutePercentageError()
 np.random.seed(SEED)
 
 # Dynamically import build_model function based on MODEL_TYPE

@@ -54,7 +54,6 @@ class FaceDetector:
         grey = cv2.cvtColor(face, cv2.COLOR_RGB2GRAY)
         eyes = self.eye_detector.detectMultiScale(grey, 1.1, 10)
         if len(eyes) >= 2:
-            print('************** EYES DETECTED **************')
             eye0 = eyes[0]
             eye1 = eyes[1]
             if eye0[0] < eye1[0]:
@@ -66,7 +65,7 @@ class FaceDetector:
             left_eye = int(left_eye[0] + left_eye[2]/2), int(left_eye[1] + left_eye[3]/2)
             right_eye = int(right_eye[0] + right_eye[2] / 2), int(right_eye[1] + right_eye[3] / 2)
 
-            # Rotate image to achieve alignment
+            # Rotate image to achieve alignment using the cosine rule
             left_x, left_y = left_eye
             right_x, right_y = right_eye
             if left_y > right_y:
@@ -91,7 +90,7 @@ class FaceDetector:
 
 if __name__ == "__main__":
     detector = FaceDetector()
-    img = plt.imread('target_faces/sources/GettyImages-1228393166.jpg')
+    img = plt.imread('references/Adelaide_Kan/14_Adelaide_Kane_0003.jpg')
     detected_face = detector.detect_faces(img)[0]['image']
     plt.imshow(detected_face)
     plt.show()
