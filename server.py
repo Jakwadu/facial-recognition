@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from facial_recogniser import FacialRecogniser
-from facial_recognition_utils import recognise_face_in_image, recognise_face_in_video_stream
 
 DEFAULT_REFERENCE_FACE_PATH = 'references'
 ENCODER_TYPE = 'vgg-face'
