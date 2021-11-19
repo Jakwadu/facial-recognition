@@ -46,7 +46,7 @@ class FaceDetector:
             if self.face_size is not None:
                 face = Image.fromarray(face)
                 face = face.resize(self.face_size)
-            faces.append({'image': np.asarray(face), 'co-ordinates': (x0, y0, x1, y1)})
+            faces.append({'image': np.asarray(face), 'co-ordinates': (int(x0), int(y0), int(x1), int(y1))})
         return faces
 
     def align_face(self, face):

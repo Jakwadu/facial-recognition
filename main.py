@@ -5,7 +5,7 @@ from facial_recognition_utils import recognise_face_in_image, recognise_face_in_
 
 DEFAULT_REFERENCE_FACE_PATH = 'references'
 ENCODER_TYPE = 'vgg-face'
-SIMILARITY_THRESHOLD = 0.4
+SIMILARITY_THRESHOLD = 0.6
 
 
 def build_parser():

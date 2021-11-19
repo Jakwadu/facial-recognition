@@ -15,7 +15,7 @@ class FacialRecogniser:
         self.face_dir = face_dir
         self.reference_faces = self.load_reference_faces(self.face_dir)
 
-    def recognise_faces(self, img):
+    def recognise_faces(self, img, return_face_img=True):
         faces = self.face_detector.detect_faces(img)
         if len(faces) < 1:
             return []
@@ -28,6 +28,8 @@ class FacialRecogniser:
                 distance = np.mean(([np.linalg.norm(encoded_face - ref) for ref in reference_embeddings]))
                 if distance <= self.threshold and distance < recognised_person[1]:
                     recognised_person = (person, distance)
+            if not return_face_img:
+                face['image'] = None
             result.append({'face': face,
                            'recognised': recognised_person[0] is not None,
                            'name': recognised_person[0]})
