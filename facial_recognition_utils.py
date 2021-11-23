@@ -27,8 +27,8 @@ def recognise_face_in_video_stream(facial_recogniser=None, url='127.0.0.1:8000',
                 result = facial_recogniser.recognise_faces(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
             else:
                 result = post_request(url, cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-            if len(result) > 0:
-                if visualise_result:
+            if visualise_result:
+                if len(result) > 0:
                     for r in result:
                         x0, y0, x1, y1 = r['face']['co-ordinates']
                         recognised = r['recognised']
@@ -39,7 +39,8 @@ def recognise_face_in_video_stream(facial_recogniser=None, url='127.0.0.1:8000',
                 cv2.imshow('Facial Recognition', frame)
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
-                else:
+            else:
+                if len(result) > 0:
                     for r in result:
                         if r['recognised']:
                             name = r['name']
