@@ -1,20 +1,28 @@
 import os
-import sys
 import pickle
 import tensorflow as tf
 import numpy as np
 from face_encoder import FaceEncoder
 from face_detector import FaceDetector
 from tqdm import tqdm
+from argparse import ArgumentParser
 
-img_dir = 'target_faces/sources'
-face_source_dir = 'c:/Users/Jamie/Documents/img_align_celeba'
 output_file = 'target_faces/target_face_encodings'
 encode = False
 batch_size = 128
 encoding_file = os.path.realpath(output_file+'.pkl')
-encoder_type = 'xception'
-saved_faces_directory = 'faces'
+encoder_type = 'vgg-face'
+saved_faces_directory = os.path.realpath('faces')
+
+
+def build_parser():
+    p = ArgumentParser()
+    p.add_argument('-s', '--source', type=str, dest='source',
+                   required=True, help='The source directory of images with faces')
+    p.add_argument('-d', '--directory', type=str, dest='destination',
+                   default=saved_faces_directory, help='The destination of the extracted faces')
+    p.add_argument('-e', '--encode', dest='encode', action='store_true')
+    return p
 
 
 def encode_image(img_paths, face_detector, img_encoder):
@@ -26,8 +34,10 @@ def encode_image(img_paths, face_detector, img_encoder):
     return face_encodings
 
 
-def save_faces(directory, face_detector):
-    files = [os.path.join(directory, f_) for f_ in os.listdir(directory)]
+def save_faces(source_directory, face_directory, face_detector):
+    if not os.path.exists(saved_faces_directory):
+        os.mkdir(saved_faces_directory)
+    files = [os.path.join(source_directory, f_) for f_ in os.listdir(source_directory)]
     idx = 0
     for f_ in tqdm(files, desc='Saving faces detected in images'):
         img = np.asarray(tf.keras.preprocessing.image.load_img(f_))
@@ -48,13 +58,13 @@ def read_and_encode_images(directory, face_detector, img_encoder):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1:
-        img_dir = sys.argv[1]
+    arg_parser = build_parser()
+    args = arg_parser.parse_args()
     detector = FaceDetector(1, face_size=(128, 128))
-    if encode:
+    if args.encode:
         encoder = FaceEncoder(encoder_type=encoder_type)
-        encoded_faces = read_and_encode_images(img_dir, detector, encoder)
+        encoded_faces = read_and_encode_images(args.source, detector, encoder)
         with open(encoding_file, 'wb') as f:
             pickle.dump(encoded_faces, f)
     else:
-        save_faces(face_source_dir, detector)
+        save_faces(args.source, args.destination, detector)
