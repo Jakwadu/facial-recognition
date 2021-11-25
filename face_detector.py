@@ -42,18 +42,30 @@ class FaceDetector:
             y1 = y0 + h
             face = frame[y0:y1, x0:x1]
             if self.align:
-                face = self.align_face(face)
+                if self.mtcnn:
+                    face = self.align_face(face, keypoints=result[idx]['keypoints'])
+                else:
+                    face = self.align_face(face)
             if self.face_size is not None:
                 face = Image.fromarray(face)
                 face = face.resize(self.face_size)
             faces.append({'image': np.asarray(face), 'co-ordinates': (int(x0), int(y0), int(x1), int(y1))})
         return faces
 
-    def align_face(self, face):
-        # Locate eye positions
-        grey = cv2.cvtColor(face, cv2.COLOR_RGB2GRAY)
-        eyes = self.eye_detector.detectMultiScale(grey, 1.1, 10)
-        if len(eyes) >= 2:
+    def align_face(self, face, keypoints=None):
+        if self.mtcnn:
+            left_eye = keypoints['left_eye']
+            right_eye = keypoints['right_eye']
+        else:
+            # Locate eye positions
+            grey = cv2.cvtColor(face, cv2.COLOR_RGB2GRAY)
+            eyes = self.eye_detector.detectMultiScale(grey, 1.1, 10)
+
+            # If less than 2 eyes detected, return face without alignment
+            if len(eyes) < 2:
+                return face
+
+            # Calculate the left and right eye centre point positions
             eye0 = eyes[0]
             eye1 = eyes[1]
             if eye0[0] < eye1[0]:
@@ -65,26 +77,26 @@ class FaceDetector:
             left_eye = int(left_eye[0] + left_eye[2]/2), int(left_eye[1] + left_eye[3]/2)
             right_eye = int(right_eye[0] + right_eye[2] / 2), int(right_eye[1] + right_eye[3] / 2)
 
-            # Rotate image to achieve alignment using the cosine rule
-            left_x, left_y = left_eye
-            right_x, right_y = right_eye
-            if left_y > right_y:
-                point_3rd = (right_x, left_y)
-                direction = -1
-            else:
-                point_3rd = (left_x, right_y)
-                direction = 1
-            a = np.linalg.norm(np.array(left_eye) - np.array(right_eye))
-            b = np.linalg.norm(np.array(right_eye) - np.array(point_3rd))
-            c = np.linalg.norm(np.array(right_eye) - np.array(left_eye))
-            if b != 0 and c != 0:
-                cos_a = (b * b + c * c - a * a) / (2 * b * c)
-                angle = np.arccos(cos_a)
-                angle = (angle * 180) / np.pi
-                if direction == -1:
-                    angle = 90 - angle
-                face = Image.fromarray(face)
-                face = np.array(face.rotate(direction * angle))
+        # Rotate image to achieve alignment using the cosine rule
+        left_x, left_y = left_eye
+        right_x, right_y = right_eye
+        if left_y > right_y:
+            point_3rd = (right_x, left_y)
+            direction = -1
+        else:
+            point_3rd = (left_x, right_y)
+            direction = 1
+        a = np.linalg.norm(np.array(left_eye) - np.array(right_eye))
+        b = np.linalg.norm(np.array(right_eye) - np.array(point_3rd))
+        c = np.linalg.norm(np.array(right_eye) - np.array(left_eye))
+        if b != 0 and c != 0:
+            cos_a = (b * b + c * c - a * a) / (2 * b * c)
+            angle = np.arccos(cos_a)
+            angle = (angle * 180) / np.pi
+            if direction == -1:
+                angle = 90 - angle
+            face = Image.fromarray(face)
+            face = np.array(face.rotate(direction * angle))
         return face
 
 
