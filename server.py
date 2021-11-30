@@ -5,11 +5,10 @@ from fastapi import FastAPI, Request
 from facial_recogniser import FacialRecogniser
 
 DEFAULT_REFERENCE_FACE_PATH = 'references'
-ENCODER_TYPE = 'vgg-face'
 SIMILARITY_THRESHOLD = 0.6
 
 app = FastAPI()
-recogniser = FacialRecogniser(ENCODER_TYPE, DEFAULT_REFERENCE_FACE_PATH, threshold=SIMILARITY_THRESHOLD)
+recogniser = FacialRecogniser(DEFAULT_REFERENCE_FACE_PATH, threshold=SIMILARITY_THRESHOLD)
 
 
 @app.get('/')

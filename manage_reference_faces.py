@@ -1,8 +1,6 @@
 import os
-import io
 import sqlite3
 import pandas as pd
-import pickle
 from face_detector import FaceDetector
 from face_encoder import FaceEncoder
 from face_dataset_encoder import read_and_encode_images
@@ -73,7 +71,7 @@ def list_people_in_references():
 def create_database_from_references():
     db_connection = sqlite3.connect('face_embeddings.db')
     face_detector = FaceDetector(n_faces=1, face_size=(224, 224))
-    face_encoder = FaceEncoder(encoder_type='vgg-face')
+    face_encoder = FaceEncoder()
     dataframes = []
     for name in os.listdir(REFERENCE_DIR):
         embeddings = read_and_encode_images(os.path.join(REFERENCE_DIR, name), face_detector, face_encoder)

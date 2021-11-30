@@ -4,7 +4,6 @@ from facial_recognition_utils import recognise_face_in_image, recognise_face_in_
 
 
 DEFAULT_REFERENCE_FACE_PATH = 'references'
-ENCODER_TYPE = 'vgg-face'
 SIMILARITY_THRESHOLD = 0.6
 USE_MTCNN = False
 USE_FACIAL_ALIGNMENT = True
@@ -28,8 +27,7 @@ if __name__ == '__main__':
     arg_parser = build_parser()
     args = arg_parser.parse_args()
     reference_faces = args.reference_faces
-    recogniser = FacialRecogniser(ENCODER_TYPE,
-                                  reference_faces,
+    recogniser = FacialRecogniser(reference_faces,
                                   threshold=SIMILARITY_THRESHOLD,
                                   align=USE_FACIAL_ALIGNMENT,
                                   mtcnn=USE_MTCNN)

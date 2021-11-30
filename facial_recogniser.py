@@ -13,13 +13,13 @@ def bytes_to_float32(x):
 
 
 class FacialRecogniser:
-    def __init__(self, encoder_type, face_dir='references', n_faces=1,
-                 face_size=(224, 224), threshold=.4, align=True, mtcnn=False, sqlite=True):
+    def __init__(self, face_dir='references', n_faces=1, face_size=(224, 224),
+                 threshold=.4, align=True, mtcnn=False, sqlite=True):
         self.n_faces = n_faces
         self.face_size = face_size
         self.threshold = threshold
         self.face_detector = FaceDetector(n_faces=self.n_faces, face_size=self.face_size, align=align, mtcnn=mtcnn)
-        self.face_encoder = FaceEncoder(encoder_type=encoder_type)
+        self.face_encoder = FaceEncoder()
         self.sqlite = sqlite
         self.face_dir = face_dir
         self.reference_faces = self.load_reference_faces(self.face_dir)
@@ -73,5 +73,5 @@ class FacialRecogniser:
 
 
 if __name__ == '__main__':
-    recogniser = FacialRecogniser('vgg-face')
+    recogniser = FacialRecogniser()
     print(recogniser.reference_faces)
