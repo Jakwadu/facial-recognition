@@ -1,4 +1,6 @@
 import os
+import sys
+
 import cv2
 import numpy as np
 from mtcnn import MTCNN
@@ -100,9 +102,28 @@ class FaceDetector:
         return face
 
 
+def run_face_detection(face_detector, path):
+    if not os.path.exists(path):
+        print(f'Are you sure {path} is a valid file path?')
+        print('Type a valid file path below or hit RETURN to exit')
+        path = input()
+        if path == '':
+            exit()
+        run_face_detection(face_detector, path)
+    else:
+        img = plt.imread(path)
+        detected_face = detector.detect_faces(img)[0]['image']
+        plt.imshow(detected_face)
+        plt.show()
+
+
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        img_path = sys.argv[1]
+    else:
+        print('Type a valid file path below or hit RETURN to exit')
+        img_path = input()
+        if img_path == '':
+            exit()
     detector = FaceDetector()
-    img = plt.imread('references/Adelaide_Kan/14_Adelaide_Kane_0003.jpg')
-    detected_face = detector.detect_faces(img)[0]['image']
-    plt.imshow(detected_face)
-    plt.show()
+    run_face_detection(detector, img_path)

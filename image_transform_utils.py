@@ -1,3 +1,5 @@
+import os
+import sys
 import numpy as np
 from multiprocessing import Pool
 from functools import partial
@@ -37,17 +39,40 @@ def mask_random_areas(imgs, n_masks=10, mask_size=(3, 3), parallelise=False, n_p
     return np.concatenate(processing_pools.map(func, img_subsets), axis=0)
 
 
+def visualise_masks(path):
+    if not os.path.exists(path):
+        print(f'Are you sure {path} is a valid file path?')
+        print('Type a valid file path below or hit RETURN to exit')
+        path = input()
+        if path == '':
+            exit()
+        visualise_masks(path)
+    else:
+        img = plt.imread(path)
+        img = np.array([img, img, img, img])
+        mask1 = mask_random_pixels(img)
+        mask2 = mask_random_areas(img, mask_size=(100, 100))
+        img1 = mask1 * img
+        img2 = mask2[0] * img
+
+        plt.subplot(311)
+        plt.title('Original')
+        plt.imshow(img[0])
+        plt.subplot(312)
+        plt.title('Pixels')
+        plt.imshow(img1[0])
+        plt.subplot(313)
+        plt.title('Patches')
+        plt.imshow(img2[0])
+        plt.show()
+
+
 if __name__ == '__main__':
-    img = plt.imread('target_faces/test/El-noruego-Erling-Haaland.jpg')
-    img = np.array([img, img, img, img])
-    mask1 = mask_random_pixels(img)
-    mask2 = mask_random_areas(img, mask_size=(100, 100))
-    img1 = mask1 * img
-    img2 = mask2 * img
-    plt.subplot(311)
-    plt.imshow(img[0])
-    plt.subplot(312)
-    plt.imshow(img1[0])
-    plt.subplot(313)
-    plt.imshow(img2[0])
-    plt.show()
+    if len(sys.argv) > 1:
+        img_path = sys.argv[1]
+    else:
+        print('Type a valid file path below or hit RETURN to exit')
+        img_path = input()
+        if img_path == '':
+            exit()
+    visualise_masks(img_path)
