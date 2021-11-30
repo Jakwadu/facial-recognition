@@ -1,0 +1,6 @@
+*.db
+*.h5
+/test_faces
+/faces
+/.ipynb_checkpoints
+/references/*
