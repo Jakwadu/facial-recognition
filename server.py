@@ -1,6 +1,7 @@
 import io
 import uvicorn
 import numpy as np
+from argparse import ArgumentParser
 from fastapi import FastAPI, Request
 from facial_recogniser import FacialRecogniser
 
@@ -38,5 +39,14 @@ async def run_facial_recognition(req: Request):
     return {'result': result}
 
 
+def build_parser():
+    parser = ArgumentParser()
+    parser.add_argument('-i', '--ip', type=str, default='127.0.0.1', dest='ip', help='Server ip address')
+    parser.add_argument('-p', '--port', type=int, default=8000, dest='port', help='Server port')
+    return parser
+
+
 if __name__ == '__main__':
-    uvicorn.run(app, host='127.0.0.1', port=8000)
+    arg_parser = build_parser()
+    args = arg_parser.parse_args()
+    uvicorn.run(app, host=args.ip, port=args.port)
