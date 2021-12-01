@@ -51,9 +51,7 @@ class FacialRecogniser:
         return result
 
     def load_reference_faces(self, directory):
-        if self.sqlite:
-            assert os.path.exists('face_embeddings.db'), 'Could not find face_embeddings.db. ' \
-                                                         'Have you created it using manage_reference_faces.py?'
+        if self.sqlite and os.path.exists('face_embeddings.db'):
             connection = sqlite3.connect('face_embeddings.db')
             encoded_reference_faces = pd.read_sql('SELECT * FROM face_embeddings', con=connection)
             encoded_reference_faces['embedding'] = encoded_reference_faces['embedding'].apply(bytes_to_float32)
