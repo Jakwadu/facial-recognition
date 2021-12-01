@@ -4,10 +4,10 @@ from facial_recognition_utils import recognise_face_in_image, recognise_face_in_
 
 def build_parser():
     parser = ArgumentParser()
-    parser.add_argument('-i', '--ip-address', type=str, default='127.0.0.1', dest='ip', help='Server ip address')
+    parser.add_argument('-i', '--ip', type=str, default='127.0.0.1', dest='ip', help='Server ip address')
     parser.add_argument('-p', '--port', type=int, default=8000, dest='port', help='Server port')
     parser.add_argument('-f', '--face', type=str, dest='img_path', help='Image file path')
-    parser.add_argument('-s', '--show-image', action='store_false',
+    parser.add_argument('-s', '--show-image', action='store_true',
                         dest='show', help='Show visualisation of facial recognition on image/video')
     return parser
 
