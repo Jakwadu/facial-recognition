@@ -2,8 +2,10 @@
 
 A simple project exploring facial recognition using OpenCV and Tensorflow 2 with Keras. A special thanks to [Sefik 
 Serengil](https://github.com/serengil) for his [deeepface](https://github.com/serengil/deepface) repo, which inspired 
-this effort. The necessary dependencies can be installed using ```pip install -r requirements.txt``` in the cloned repo 
-directory.
+this effort. The necessary dependencies can be installed from the repo directory using:
+```
+pip install -r requirements.txt
+``` 
 
 ## System Architecture
 The system consists of the following major components:
