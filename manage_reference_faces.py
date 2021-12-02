@@ -15,7 +15,7 @@ def build_parser():
     p.add_argument('-p', '--person', type=str, dest='person', help='The name of the person to be added/removed')
     p.add_argument('-a', '--add', type=str, dest='add', help='Add person to database')
     p.add_argument('-r', '--remove', dest='remove', action='store_true', help='Remove person from database')
-    p.add_argument('-b', '--build-database', dest='build_database', action='store_false')
+    p.add_argument('-b', '--build-database', dest='build_database', action='store_true')
     return p
 
 
