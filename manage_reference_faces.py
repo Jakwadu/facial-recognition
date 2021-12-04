@@ -31,12 +31,12 @@ def create_new_reference(name, source_directory):
     print(f'{name} successfully added to the database')
 
 
-def add_person_to_database(name, source_directory):
+def add_person_to_references(name, source_directory):
     if os.path.exists(os.path.join(REFERENCE_DIR, name)):
         answer = input(f'{name} already exists in the database. Do yo want to replace the old entry?[y/n]:')
         check = [answer == char for char in ['y', 'Y', 'n', 'N']]
         if not any(check):
-            add_person_to_database(name, source_directory)
+            add_person_to_references(name, source_directory)
         else:
             if answer == 'n' or answer == 'N':
                 exit()
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     if arguments.add:
         assert person, 'Name of person to be added not specified'
         src_directory = arguments.add
-        add_person_to_database(person, src_directory)
+        add_person_to_references(person, src_directory)
     elif arguments.remove:
         assert person, 'Name of person to be removed not specified'
         remove_person_from_references(person)

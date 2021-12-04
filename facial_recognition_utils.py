@@ -5,7 +5,6 @@ import numpy as np
 import requests
 import matplotlib.patches as patches
 from matplotlib import pyplot as plt
-from facial_recogniser import FacialRecogniser
 
 
 def post_request(url, array):
